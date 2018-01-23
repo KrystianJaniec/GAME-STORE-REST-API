@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pl.janiec.krystian.gamestorerest.domain.Category;
 import pl.janiec.krystian.gamestorerest.domain.Customer;
+import pl.janiec.krystian.gamestorerest.domain.Producer;
 import pl.janiec.krystian.gamestorerest.repository.CategoryRepository;
 import pl.janiec.krystian.gamestorerest.repository.CustomerRepository;
 
@@ -24,6 +25,7 @@ public class InitialData implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         loadCategoryList();
         loadCustomerList();
+        loadProducerList();
     }
 
     private void loadCategoryList() {
@@ -74,5 +76,11 @@ public class InitialData implements CommandLineRunner {
 
         customerRepository.save(man);
         customerRepository.save(woman);
+    }
+
+    private void loadProducerList() {
+        Producer smallCompany = new Producer();
+        smallCompany.setCompanyName("CD Projekt Red");
+        smallCompany.setCompanyShortcutName("CDPR");
     }
 }

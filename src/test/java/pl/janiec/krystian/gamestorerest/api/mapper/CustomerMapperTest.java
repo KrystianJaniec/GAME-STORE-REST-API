@@ -24,4 +24,14 @@ public class CustomerMapperTest {
         assertThat(customerDTO.getFirstName(), is(equalTo(ANNA)));
         assertThat(customerDTO.getLastName(), is(equalTo(NOWAK)));
     }
+
+    @Test
+    public void shouldMappingCustomerDTOClassToCustomer() throws Exception {
+        CustomerDTO customerDTO = createNewCustomerDTO(ANNA, NOWAK);
+
+        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
+
+        assertThat(customer.getFirstName(), is(equalTo(ANNA)));
+        assertThat(customer.getLastName(), is(equalTo(NOWAK)));
+    }
 }

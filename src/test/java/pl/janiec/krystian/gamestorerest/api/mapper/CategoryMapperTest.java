@@ -18,9 +18,9 @@ public class CategoryMapperTest {
 
     @Test
     public void shouldMappingCategoryClassToCategoryDTO() throws Exception {
-        Category testCategory = createNewCategory(ACTION_ID, CATEGORY_ACTION);
+        Category category = createNewCategory(ACTION_ID, CATEGORY_ACTION);
 
-        CategoryDTO categoryDTO = categoryMapper.categoryToCategoryDTO(testCategory);
+        CategoryDTO categoryDTO = categoryMapper.categoryToCategoryDTO(category);
 
         assertThat(categoryDTO.getId(), is(equalTo(ACTION_ID)));
         assertThat(categoryDTO.getName(), is(equalTo(CATEGORY_ACTION)));
