@@ -8,10 +8,10 @@ import pl.janiec.krystian.gamestorerest.api.model.CategoryListDTO;
 import pl.janiec.krystian.gamestorerest.service.CategoryService;
 
 @RestController
-@RequestMapping(CategoryController.CATEGORY_URL)
+@RequestMapping(CategoryController.CATEGORIES_URL)
 public class CategoryController {
 
-    static final String CATEGORY_URL = "/api/categories/";
+    public static final String CATEGORIES_URL = "/api/categories/";
 
     private final CategoryService categoryService;
 
@@ -22,7 +22,7 @@ public class CategoryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CategoryListDTO getAllCategoryList() {
+    public CategoryListDTO getAllCategories() {
         return new CategoryListDTO(categoryService.getAllCategories());
     }
 

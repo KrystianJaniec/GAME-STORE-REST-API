@@ -17,9 +17,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
-
-import static pl.janiec.krystian.gamestorerest.util.TestConstants.*;
-import static pl.janiec.krystian.gamestorerest.util.TestUtil.*;
+import static pl.janiec.krystian.gamestorerest.controller.CategoryController.CATEGORIES_URL;
+import static pl.janiec.krystian.gamestorerest.util.TestConstants.CATEGORY_SPORT;
+import static pl.janiec.krystian.gamestorerest.util.TestConstants.SPORT_ID;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.createNewCategory;
 
 public class CategoryServiceTest {
 
@@ -56,5 +57,6 @@ public class CategoryServiceTest {
 
         assertThat(categoryDTO.getName(), is(equalTo(CATEGORY_SPORT)));
         assertThat(categoryDTO.getId(), is(equalTo(SPORT_ID)));
+        assertThat(categoryDTO.getCategoryUrl(), is(equalTo(CATEGORIES_URL + CATEGORY_SPORT.toLowerCase())));
     }
 }

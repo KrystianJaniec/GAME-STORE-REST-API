@@ -6,19 +6,26 @@ import org.springframework.stereotype.Component;
 import pl.janiec.krystian.gamestorerest.domain.Category;
 import pl.janiec.krystian.gamestorerest.domain.Customer;
 import pl.janiec.krystian.gamestorerest.domain.Producer;
+import pl.janiec.krystian.gamestorerest.domain.Product;
 import pl.janiec.krystian.gamestorerest.repository.CategoryRepository;
 import pl.janiec.krystian.gamestorerest.repository.CustomerRepository;
+import pl.janiec.krystian.gamestorerest.repository.ProducerRepository;
+import pl.janiec.krystian.gamestorerest.repository.ProductRepository;
 
 @Component
 public class InitialData implements CommandLineRunner {
 
     private CategoryRepository categoryRepository;
     private CustomerRepository customerRepository;
+    private ProducerRepository producerRepository;
+    private ProductRepository productRepository;
 
     @Autowired
-    public InitialData(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+    public InitialData(CategoryRepository categoryRepository, CustomerRepository customerRepository, ProducerRepository producerRepository, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
+        this.producerRepository = producerRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -26,32 +33,33 @@ public class InitialData implements CommandLineRunner {
         loadCategoryList();
         loadCustomerList();
         loadProducerList();
+        loadProductList();
     }
 
     private void loadCategoryList() {
         Category shooter = new Category();
-        shooter.setName("Shooter");
+        shooter.setName("shooter");
 
         Category action = new Category();
-        action.setName("Action");
+        action.setName("action");
 
         Category adventure = new Category();
-        adventure.setName("Adventure");
+        adventure.setName("adventure");
 
         Category rolePlaying = new Category();
-        rolePlaying.setName("Role-playing");
+        rolePlaying.setName("role-playing");
 
         Category simulation = new Category();
-        simulation.setName("Simulation");
+        simulation.setName("simulation");
 
         Category strategy = new Category();
-        strategy.setName("Strategy");
+        strategy.setName("strategy");
 
         Category sports = new Category();
-        sports.setName("Sports");
+        sports.setName("sports");
 
         Category mmo = new Category();
-        sports.setName("MMO");
+        sports.setName("mmo");
 
         categoryRepository.save(shooter);
         categoryRepository.save(action);
@@ -82,5 +90,43 @@ public class InitialData implements CommandLineRunner {
         Producer smallCompany = new Producer();
         smallCompany.setCompanyName("CD Projekt Red");
         smallCompany.setCompanyShortcutName("CDPR");
+
+        Producer averageCompany = new Producer();
+        averageCompany.setCompanyName("2K Games Company");
+        averageCompany.setCompanyShortcutName("2K");
+
+        Producer bigCompany = new Producer();
+        bigCompany.setCompanyName("Electronic Arts");
+        bigCompany.setCompanyShortcutName("EA");
+
+        producerRepository.save(smallCompany);
+        producerRepository.save(bigCompany);
+    }
+
+    private void loadProductList() {
+        Product witcher = new Product();
+        witcher.setProductName("The Witcher 3: Wild Hunt");
+        witcher.setProductDescription("The Witcher 3: Wild Hunt is a 2015 action role-playing video game developed and published by CD Projekt");
+        witcher.setProductPrice(99.99);
+        witcher.setProducerId(1);
+        witcher.setCategoryName("action");
+
+        Product fifa = new Product();
+        fifa.setProductName("FIFA 18");
+        fifa.setProductDescription("Score incredible goals in FIFA 18 as new movement and finishing animations unlock more fluid striking and heading of the ball");
+        fifa.setProductPrice(189.99);
+        fifa.setProducerId(3);
+        fifa.setCategoryName("sports");
+
+        Product mafia = new Product();
+        mafia.setProductName("Mafia II");
+        mafia.setProductDescription("Mafia II is an open world action-adventure video game developed by 2K Czech and published by 2K Games");
+        mafia.setProductPrice(128.90);
+        mafia.setProducerId(2);
+        mafia.setCategoryName("shooter");
+
+        productRepository.save(mafia);
+        productRepository.save(witcher);
+        productRepository.save(fifa);
     }
 }

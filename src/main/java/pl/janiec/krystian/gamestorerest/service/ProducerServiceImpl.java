@@ -10,6 +10,8 @@ import pl.janiec.krystian.gamestorerest.repository.ProducerRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static pl.janiec.krystian.gamestorerest.controller.ProducerController.PRODUCERS_URL;
+
 @Service
 public class ProducerServiceImpl implements ProducerService {
 
@@ -26,30 +28,43 @@ public class ProducerServiceImpl implements ProducerService {
     public List<ProducerDTO> getAllProducers() {
         return producerRepository.findAll()
                 .stream()
-                .map(producerMapper::producerToProducerDTO)
+                .map(producer -> {
+                    ProducerDTO producerDTO = producerMapper.producerToProducerDTO(producer);
+                    producerDTO.setProducerUrl(PRODUCERS_URL + producer.getId());
+
+                    return producerDTO;
+                })
                 .collect(Collectors.toList());
     }
 
     @Override
     public ProducerDTO getProducerById(Long id) {
-        return producerMapper.producerToProducerDTO(producerRepository.findById(id));
+        ProducerDTO producerDTO = producerMapper.producerToProducerDTO(producerRepository.findById(id));
+        producerDTO.setProducerUrl(PRODUCERS_URL + id);
+
+        return producerDTO;
     }
 
     @Override
     public ProducerDTO createProducer(ProducerDTO producerDTO) {
-        Producer producer = producerMapper.producerDTOToProducer(producerDTO);
-        Producer savedProducerInDB = producerRepository.save(producer);
-
-        return producerMapper.producerToProducerDTO(savedProducerInDB);
+        return saveProducerAndReturnProducerDTO(producerMapper.producerDTOtoProducer(producerDTO));
     }
 
     @Override
     public ProducerDTO updateProducer(ProducerDTO producerDTO, Long id) {
-        Producer producer = producerMapper.producerDTOToProducer(producerDTO);
+        Producer producer = producerMapper.producerDTOtoProducer(producerDTO);
         producer.setId(id);
-        Producer savedProducerInDB = producerRepository.save(producer);
 
-        return producerMapper.producerToProducerDTO(savedProducerInDB);
+        return saveProducerAndReturnProducerDTO(producer);
+    }
+
+    private ProducerDTO saveProducerAndReturnProducerDTO(Producer producer) {
+        Producer savedProducerInDB = producerRepository.save(producer);
+        ProducerDTO newProducerDTO = producerMapper.producerToProducerDTO(savedProducerInDB);
+
+        newProducerDTO.setProducerUrl(PRODUCERS_URL + savedProducerInDB.getId());
+
+        return newProducerDTO;
     }
 
     @Override

@@ -10,6 +10,8 @@ import pl.janiec.krystian.gamestorerest.repository.CustomerRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static pl.janiec.krystian.gamestorerest.controller.CustomerController.CUSTOMERS_URL;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -26,30 +28,43 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerDTO> getAllCustomers() {
         return customerRepository.findAll()
                 .stream()
-                .map(customerMapper::customerToCustomerDTO)
+                .map(customer -> {
+                    CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
+                    customerDTO.setCustomerUrl(CUSTOMERS_URL + customer.getId());
+
+                    return customerDTO;
+                })
                 .collect(Collectors.toList());
     }
 
     @Override
     public CustomerDTO getCustomerById(Long id) {
-        return customerMapper.customerToCustomerDTO(customerRepository.findById(id));
+        CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customerRepository.findById(id));
+        customerDTO.setCustomerUrl(CUSTOMERS_URL + id);
+
+        return customerDTO;
     }
 
     @Override
     public CustomerDTO createCustomer(CustomerDTO customerDTO) {
-        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
-        Customer savedCustomerInDB = customerRepository.save(customer);
-
-        return customerMapper.customerToCustomerDTO(savedCustomerInDB);
+        return saveCustomerAndReturnCustomerDTO(customerMapper.customerDTOtoCustomer(customerDTO));
     }
 
     @Override
     public CustomerDTO updateCustomer(CustomerDTO customerDTO, Long id) {
-        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
+        Customer customer = customerMapper.customerDTOtoCustomer(customerDTO);
         customer.setId(id);
-        Customer savedCustomerInDB = customerRepository.save(customer);
 
-        return customerMapper.customerToCustomerDTO(savedCustomerInDB);
+        return saveCustomerAndReturnCustomerDTO(customer);
+    }
+
+    private CustomerDTO saveCustomerAndReturnCustomerDTO(Customer customer) {
+        Customer savedCustomerInDB = customerRepository.save(customer);
+        CustomerDTO newCustomerDTO = customerMapper.customerToCustomerDTO(savedCustomerInDB);
+
+        newCustomerDTO.setCustomerUrl(CUSTOMERS_URL + savedCustomerInDB.getId());
+
+        return newCustomerDTO;
     }
 
     @Override

@@ -9,6 +9,8 @@ import pl.janiec.krystian.gamestorerest.repository.CategoryRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static pl.janiec.krystian.gamestorerest.controller.CategoryController.CATEGORIES_URL;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -25,12 +27,20 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll()
                 .stream()
-                .map(categoryMapper::categoryToCategoryDTO)
+                .map(category -> {
+                    CategoryDTO categoryDTO = categoryMapper.categoryToCategoryDTO(category);
+                    categoryDTO.setCategoryUrl(CATEGORIES_URL + category.getId());
+
+                    return categoryDTO;
+                })
                 .collect(Collectors.toList());
     }
 
     @Override
     public CategoryDTO getCategoryByName(String name) {
-        return categoryMapper.categoryToCategoryDTO(categoryRepository.findByName(name));
+        CategoryDTO categoryDTO = categoryMapper.categoryToCategoryDTO(categoryRepository.findByName(name.toLowerCase()));
+        categoryDTO.setCategoryUrl(CATEGORIES_URL + name.toLowerCase());
+
+        return categoryDTO;
     }
 }

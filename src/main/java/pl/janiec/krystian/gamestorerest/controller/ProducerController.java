@@ -5,19 +5,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.janiec.krystian.gamestorerest.api.model.ProducerDTO;
 import pl.janiec.krystian.gamestorerest.api.model.ProducerListDTO;
+import pl.janiec.krystian.gamestorerest.api.model.ProductDTO;
+import pl.janiec.krystian.gamestorerest.api.model.ProductListDTO;
 import pl.janiec.krystian.gamestorerest.service.ProducerService;
+import pl.janiec.krystian.gamestorerest.service.ProductService;
 
 @RestController
-@RequestMapping(ProducerController.PRODUCER_URL)
+@RequestMapping(ProducerController.PRODUCERS_URL)
 public class ProducerController {
 
-    static final String PRODUCER_URL = "/api/producers/";
+    public static final String PRODUCERS_URL = "/api/producers/";
 
     private final ProducerService producerService;
+    private final ProductService productService;
 
     @Autowired
-    public ProducerController(ProducerService producerService) {
+    public ProducerController(ProducerService producerService, ProductService productService) {
         this.producerService = producerService;
+        this.productService = productService;
     }
 
     @GetMapping
@@ -48,5 +53,17 @@ public class ProducerController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteProducer(@PathVariable Long id) {
         producerService.deleteProducerById(id);
+    }
+
+    @GetMapping("{id}/products")
+    @ResponseStatus(HttpStatus.OK)
+    public ProductListDTO getAllProductsForProducerWithId(@PathVariable Integer id) {
+        return new ProductListDTO(productService.getAllProductsForProducerWithId(id));
+    }
+
+    @PostMapping("{id}/products")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductDTO createNewProductForProducerWithId(@PathVariable Integer id, @RequestBody ProductDTO productDTO) {
+        return productService.createProductForProducerWithId(id, productDTO);
     }
 }

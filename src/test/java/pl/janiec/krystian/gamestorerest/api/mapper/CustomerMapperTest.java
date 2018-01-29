@@ -7,9 +7,9 @@ import pl.janiec.krystian.gamestorerest.domain.Customer;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static pl.janiec.krystian.gamestorerest.util.TestConstants.*;
-import static pl.janiec.krystian.gamestorerest.util.TestUtil.*;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.createNewCustomer;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.createNewCustomerDTO;
 
 public class CustomerMapperTest {
 
@@ -29,7 +29,7 @@ public class CustomerMapperTest {
     public void shouldMappingCustomerDTOClassToCustomer() throws Exception {
         CustomerDTO customerDTO = createNewCustomerDTO(ANNA, NOWAK);
 
-        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
+        Customer customer = customerMapper.customerDTOtoCustomer(customerDTO);
 
         assertThat(customer.getFirstName(), is(equalTo(ANNA)));
         assertThat(customer.getLastName(), is(equalTo(NOWAK)));

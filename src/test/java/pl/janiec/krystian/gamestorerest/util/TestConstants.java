@@ -4,6 +4,7 @@ public class TestConstants {
 
     public static final long ACTION_ID = 1L;
     public static final long SPORT_ID = 2L;
+    public static final Integer PRODUCER_ID = 1;
     public static final String CATEGORY_ACTION = "Action games";
     public static final String CATEGORY_SPORT = "Sport games";
     public static final String ADAM = "Adam";
@@ -18,4 +19,12 @@ public class TestConstants {
     public static final String TWO_K_SPORTS = "2K Games Company";
     public static final String TWO_K = "2K Games";
     public static final long TWO_K_ID = 200L;
+    public static final String WITCHER_3 = "The Witcher 3: Wild Hunt";
+    public static final String WITCHER_DESCRIPTION = "The Witcher 3: Wild Hunt is a 2015 action role-playing video game developed and published by CD Projekt";
+    public static final Double WITCHER_PRICE = 99.99;
+    public static final Long WITCHER_ID = 11L;
+    public static final String MAFIA_II = "Mafia II";
+    public static final String MAFIA_DESCRIPTION = "Mafia II is an open world action-adventure video game developed by 2K Czech and published by 2K Games";
+    public static final Double MAFIA_PRICE = 128.90;
+    public static final Long MAFIA_ID = 12L;
 }

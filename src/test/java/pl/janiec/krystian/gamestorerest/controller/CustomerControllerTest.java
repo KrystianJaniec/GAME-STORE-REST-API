@@ -14,21 +14,17 @@ import pl.janiec.krystian.gamestorerest.service.CustomerService;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import static pl.janiec.krystian.gamestorerest.controller.CustomerController.CUSTOMERS_URL;
-import static pl.janiec.krystian.gamestorerest.util.TestUtil.*;
 import static pl.janiec.krystian.gamestorerest.util.TestConstants.*;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.createNewCustomerDTO;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.writeValueAsJSON;
 
 public class CustomerControllerTest {
 
@@ -49,14 +45,14 @@ public class CustomerControllerTest {
 
     @Test
     public void shouldSuccessfullyShowListWithAllCustomers() throws Exception {
-        List<CustomerDTO> customerList = Arrays.asList(createNewCustomerDTO(ADAM, KOWALSKI), createNewCustomerDTO(ANNA, NOWAK));
+        List<CustomerDTO> customers = Arrays.asList(createNewCustomerDTO(ADAM, KOWALSKI), createNewCustomerDTO(ANNA, NOWAK));
 
-        when(customerService.getAllCustomers()).thenReturn(customerList);
+        when(customerService.getAllCustomers()).thenReturn(customers);
 
         mockMvc.perform(get(CUSTOMERS_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customerList", hasSize(2)));
+                .andExpect(jsonPath("$.customers", hasSize(2)));
 
         verify(customerService, times(1)).getAllCustomers();
     }
@@ -64,50 +60,56 @@ public class CustomerControllerTest {
     @Test
     public void shouldSuccessfullyShowCustomerWithThisId() throws Exception {
         CustomerDTO customer = createNewCustomerDTO(ANNA, NOWAK);
+        customer.setCustomerUrl(CUSTOMERS_URL + ANNA_NOWAK_ID);
 
         when(customerService.getCustomerById(anyLong())).thenReturn(customer);
 
         mockMvc.perform(get(CUSTOMERS_URL + "{id}", ANNA_NOWAK_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", is(equalTo(ANNA))))
-                .andExpect(jsonPath("$.lastName", is(equalTo(NOWAK))));
+                .andExpect(jsonPath("$.first_name", is(equalTo(ANNA))))
+                .andExpect(jsonPath("$.last_name", is(equalTo(NOWAK))))
+                .andExpect(jsonPath("$.customer_url", is(equalTo(CUSTOMERS_URL + ANNA_NOWAK_ID))));
 
         verify(customerService, times(1)).getCustomerById(ANNA_NOWAK_ID);
     }
 
     @Test
-    public void shouldCreateNewCustomerFromCustomerDTOAndReturnNewCustomerDTO() throws Exception {
-        CustomerDTO customerDTO = createNewCustomerDTO(ADAM, KOWALSKI);
-        CustomerDTO newCustomerDTO = createNewCustomerDTO(customerDTO.getFirstName(), customerDTO.getLastName());
+    public void shouldCreateNewCustomerFromCustomerDTOAndShowNewCustomerDTO() throws Exception {
+        CustomerDTO customerContent = createNewCustomerDTO(ADAM, KOWALSKI);
+        CustomerDTO customerDTO = createNewCustomerDTO(customerContent.getFirstName(), customerContent.getLastName());
+        customerDTO.setCustomerUrl(CUSTOMERS_URL + ADAM_KOWALSKI_ID);
 
-        when(customerService.createCustomer(customerDTO)).thenReturn(newCustomerDTO);
+        when(customerService.createCustomer(customerContent)).thenReturn(customerDTO);
 
         mockMvc.perform(post(CUSTOMERS_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(writeValueAsJSON(customerDTO)))
+                .content(writeValueAsJSON(customerContent)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.firstName", is(equalTo(ADAM))))
-                .andExpect(jsonPath("$.lastName", is(equalTo(KOWALSKI))));
+                .andExpect(jsonPath("$.first_name", is(equalTo(ADAM))))
+                .andExpect(jsonPath("$.last_name", is(equalTo(KOWALSKI))))
+                .andExpect(jsonPath("$.customer_url", is(equalTo(CUSTOMERS_URL + ADAM_KOWALSKI_ID))));
 
-        verify(customerService, times(1)).createCustomer(customerDTO);
+        verify(customerService, times(1)).createCustomer(customerContent);
     }
 
     @Test
     public void shouldUpdateCustomerFromCustomerDTOWithGivenIdAndReturnNewCustomerDTO() throws Exception {
-        CustomerDTO customerDTO = createNewCustomerDTO(ANNA, NOWAK);
-        CustomerDTO updatedCustomerDTO = createNewCustomerDTO(customerDTO.getFirstName(), customerDTO.getLastName());
+        CustomerDTO customerContent = createNewCustomerDTO(ANNA, NOWAK);
+        CustomerDTO customerDTO = createNewCustomerDTO(customerContent.getFirstName(), customerContent.getLastName());
+        customerDTO.setCustomerUrl(CUSTOMERS_URL + ANNA_NOWAK_ID);
 
-        when(customerService.updateCustomer(any(CustomerDTO.class), anyLong())).thenReturn(updatedCustomerDTO);
+        when(customerService.updateCustomer(any(CustomerDTO.class), anyLong())).thenReturn(customerDTO);
 
         mockMvc.perform(put(CUSTOMERS_URL + "{id}", ANNA_NOWAK_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(writeValueAsJSON(customerDTO)))
+                .content(writeValueAsJSON(customerContent)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", is(equalTo(ANNA))))
-                .andExpect(jsonPath("$.lastName", is(equalTo(NOWAK))));
+                .andExpect(jsonPath("$.first_name", is(equalTo(ANNA))))
+                .andExpect(jsonPath("$.last_name", is(equalTo(NOWAK))))
+                .andExpect(jsonPath("$.customer_url", is(equalTo(CUSTOMERS_URL + ANNA_NOWAK_ID))));
 
-        verify(customerService, times(1)).updateCustomer(customerDTO, ANNA_NOWAK_ID);
+        verify(customerService, times(1)).updateCustomer(customerContent, ANNA_NOWAK_ID);
     }
 
     @Test

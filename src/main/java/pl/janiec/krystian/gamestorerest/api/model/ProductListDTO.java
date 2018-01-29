@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class ProducerListDTO {
+public class ProductListDTO {
 
-    List<ProducerDTO> producers;
+    List<ProductDTO> products;
 }

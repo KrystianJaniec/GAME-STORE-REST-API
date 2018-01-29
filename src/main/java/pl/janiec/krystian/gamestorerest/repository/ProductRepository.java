@@ -2,10 +2,10 @@ package pl.janiec.krystian.gamestorerest.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.janiec.krystian.gamestorerest.domain.Producer;
+import pl.janiec.krystian.gamestorerest.domain.Product;
 
 @Repository
-public interface ProducerRepository extends JpaRepository<Producer, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    Producer findById(Long id);
+    Product findById(Long id);
 }

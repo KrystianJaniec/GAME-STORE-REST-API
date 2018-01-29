@@ -20,5 +20,5 @@ public interface ProducerMapper {
     @Mappings({
             @Mapping(source = "name", target = "companyName"),
             @Mapping(source = "shortcut", target = "companyShortcutName")})
-    Producer producerDTOToProducer(ProducerDTO producerDTO);
+    Producer producerDTOtoProducer(ProducerDTO producerDTO);
 }

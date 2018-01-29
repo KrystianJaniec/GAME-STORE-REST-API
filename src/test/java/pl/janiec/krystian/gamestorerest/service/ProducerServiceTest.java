@@ -17,12 +17,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import static org.mockito.Mockito.*;
+import static pl.janiec.krystian.gamestorerest.controller.ProducerController.PRODUCERS_URL;
 import static pl.janiec.krystian.gamestorerest.util.TestConstants.*;
-import static pl.janiec.krystian.gamestorerest.util.TestUtil.*;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.createNewProducer;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.createNewProducerDTO;
 
 public class ProducerServiceTest {
 
@@ -39,7 +38,7 @@ public class ProducerServiceTest {
     }
 
     @Test
-    public void shouldSuccessfullyGetListWithAllProducers() throws Exception{
+    public void shouldSuccessfullyGetListWithAllProducers() throws Exception {
         List<Producer> producerList = Arrays.asList(new Producer(), new Producer(), new Producer());
 
         when(producerRepository.findAll()).thenReturn(producerList);
@@ -51,7 +50,7 @@ public class ProducerServiceTest {
 
     @Test
     public void shouldSuccessfullyGetProducerById() throws Exception {
-        Producer producer = createNewProducer(CD_PROJEKT_RED, CDPR);
+        Producer producer = createNewProducer(CD_PROJEKT_RED, CDPR, CDPR_ID);
 
         when(producerRepository.findById(anyLong())).thenReturn(producer);
 
@@ -59,12 +58,13 @@ public class ProducerServiceTest {
 
         assertThat(producerDTO.getName(), is(equalTo(CD_PROJEKT_RED)));
         assertThat(producerDTO.getShortcut(), is(equalTo(CDPR)));
+        assertThat(producerDTO.getProducerUrl(), is(equalTo(PRODUCERS_URL + CDPR_ID)));
     }
 
     @Test
-    public void shouldSuccessfullyCreateNewProducer() throws Exception{
+    public void shouldSuccessfullyCreateNewProducer() throws Exception {
         ProducerDTO producerDTO = createNewProducerDTO(TWO_K_SPORTS, TWO_K);
-        Producer savedProducerInDB = createNewProducer(producerDTO.getName(), producerDTO.getShortcut());
+        Producer savedProducerInDB = createNewProducer(producerDTO.getName(), producerDTO.getShortcut(), TWO_K_ID);
 
         when(producerRepository.save(any(Producer.class))).thenReturn(savedProducerInDB);
 
@@ -72,19 +72,21 @@ public class ProducerServiceTest {
 
         assertThat(newProducerDTO.getName(), is(equalTo(TWO_K_SPORTS)));
         assertThat(newProducerDTO.getShortcut(), is(equalTo(TWO_K)));
+        assertThat(newProducerDTO.getProducerUrl(), is(equalTo(PRODUCERS_URL + TWO_K_ID)));
     }
 
     @Test
-    public void shouldSuccessfullyUpdateProducer() throws Exception{
+    public void shouldSuccessfullyUpdateProducer() throws Exception {
         ProducerDTO producerDTO = createNewProducerDTO(TWO_K_SPORTS, TWO_K);
-        Producer savedProducerInDB = createNewProducer(producerDTO.getName(), producerDTO.getShortcut());
+        Producer savedProducerInDB = createNewProducer(producerDTO.getName(), producerDTO.getShortcut(), TWO_K_ID);
 
         when(producerRepository.save(any(Producer.class))).thenReturn(savedProducerInDB);
 
-        ProducerDTO updatedProducerDTO = producerService.updateProducer(producerDTO,TWO_K_ID);
+        ProducerDTO updatedProducerDTO = producerService.updateProducer(producerDTO, TWO_K_ID);
 
         assertThat(updatedProducerDTO.getName(), is(equalTo(TWO_K_SPORTS)));
         assertThat(updatedProducerDTO.getShortcut(), is(equalTo(TWO_K)));
+        assertThat(updatedProducerDTO.getProducerUrl(), is(equalTo(PRODUCERS_URL + TWO_K_ID)));
     }
 
     @Test

@@ -17,12 +17,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import static org.mockito.Mockito.*;
+import static pl.janiec.krystian.gamestorerest.controller.CustomerController.CUSTOMERS_URL;
 import static pl.janiec.krystian.gamestorerest.util.TestConstants.*;
-import static pl.janiec.krystian.gamestorerest.util.TestUtil.*;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.createNewCustomer;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.createNewCustomerDTO;
 
 public class CustomerServiceTest {
 
@@ -59,6 +58,7 @@ public class CustomerServiceTest {
 
         assertThat(customerDTO.getFirstName(), is(equalTo(ADAM)));
         assertThat(customerDTO.getLastName(), is(equalTo(KOWALSKI)));
+        assertThat(customerDTO.getCustomerUrl(), is(equalTo(CUSTOMERS_URL + ADAM_KOWALSKI_ID)));
     }
 
     @Test
@@ -72,6 +72,7 @@ public class CustomerServiceTest {
 
         assertThat(newCustomerDTO.getFirstName(), is(equalTo(customerDTO.getFirstName())));
         assertThat(newCustomerDTO.getLastName(), is(equalTo(customerDTO.getLastName())));
+        assertThat(newCustomerDTO.getCustomerUrl(), is(equalTo(CUSTOMERS_URL + ADAM_KOWALSKI_ID)));
     }
 
     @Test
@@ -85,6 +86,7 @@ public class CustomerServiceTest {
 
         assertThat(updatedCustomerDTO.getFirstName(), is(equalTo(customerDTO.getFirstName())));
         assertThat(updatedCustomerDTO.getLastName(), is(equalTo(customerDTO.getLastName())));
+        assertThat(updatedCustomerDTO.getCustomerUrl(), is(equalTo(CUSTOMERS_URL + ADAM_KOWALSKI_ID)));
     }
 
     @Test

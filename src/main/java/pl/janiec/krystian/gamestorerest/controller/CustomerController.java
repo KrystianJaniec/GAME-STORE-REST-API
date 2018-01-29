@@ -11,7 +11,7 @@ import pl.janiec.krystian.gamestorerest.service.CustomerService;
 @RequestMapping(CustomerController.CUSTOMERS_URL)
 public class CustomerController {
 
-    static final String CUSTOMERS_URL = "/api/customers/";
+    public static final String CUSTOMERS_URL = "/api/customers/";
 
     private final CustomerService customerService;
 

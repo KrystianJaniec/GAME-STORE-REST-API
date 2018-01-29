@@ -7,9 +7,9 @@ import pl.janiec.krystian.gamestorerest.domain.Category;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import static pl.janiec.krystian.gamestorerest.util.TestConstants.*;
-import static pl.janiec.krystian.gamestorerest.util.TestUtil.*;
+import static pl.janiec.krystian.gamestorerest.util.TestConstants.ACTION_ID;
+import static pl.janiec.krystian.gamestorerest.util.TestConstants.CATEGORY_ACTION;
+import static pl.janiec.krystian.gamestorerest.util.TestUtil.createNewCategory;
 
 
 public class CategoryMapperTest {

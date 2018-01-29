@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import pl.janiec.krystian.gamestorerest.api.model.CategoryDTO;
 import pl.janiec.krystian.gamestorerest.api.model.CustomerDTO;
 import pl.janiec.krystian.gamestorerest.api.model.ProducerDTO;
+import pl.janiec.krystian.gamestorerest.api.model.ProductDTO;
 import pl.janiec.krystian.gamestorerest.domain.Category;
 import pl.janiec.krystian.gamestorerest.domain.Customer;
 import pl.janiec.krystian.gamestorerest.domain.Producer;
+import pl.janiec.krystian.gamestorerest.domain.Product;
 
 public class TestUtil {
 
@@ -40,18 +42,47 @@ public class TestUtil {
         return customer;
     }
 
-    public static Producer createNewProducer(String name, String shortcutName){
+    public static Producer createNewProducer(String name, String shortcutName, Long id) {
         Producer producer = new Producer();
         producer.setCompanyName(name);
         producer.setCompanyShortcutName(shortcutName);
+        producer.setId(id);
         return producer;
     }
 
-    public static ProducerDTO createNewProducerDTO(String name, String shortcut){
+    public static ProducerDTO createNewProducerDTO(String name, String shortcut) {
         ProducerDTO producer = new ProducerDTO();
         producer.setName(name);
         producer.setShortcut(shortcut);
         return producer;
+    }
+
+    public static Product createNewProduct(String name, String description, Double price, Long id) {
+        Product product = new Product();
+        product.setProductName(name);
+        product.setProductDescription(description);
+        product.setProductPrice(price);
+        product.setId(id);
+        return product;
+    }
+
+    public static Product createNewProduct(String name, String description, Double price, Integer producerId, String categoryName, Long id) {
+        Product product = new Product();
+        product.setProductName(name);
+        product.setProductDescription(description);
+        product.setProductPrice(price);
+        product.setProducerId(producerId);
+        product.setCategoryName(categoryName);
+        product.setId(id);
+        return product;
+    }
+
+    public static ProductDTO createNewProductDTO(String name, String description, Double price) {
+        ProductDTO product = new ProductDTO();
+        product.setName(name);
+        product.setDescription(description);
+        product.setPrice(price);
+        return product;
     }
 
     public static String writeValueAsJSON(Object object) throws JsonProcessingException {

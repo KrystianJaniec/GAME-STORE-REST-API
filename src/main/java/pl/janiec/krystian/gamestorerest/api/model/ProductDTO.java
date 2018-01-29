@@ -8,10 +8,16 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryDTO {
+public class ProductDTO {
 
     private Long id;
     private String name;
+    private String description;
+    private Double price;
+    @JsonProperty("product_url")
+    private String productUrl;
+    @JsonProperty("producer_url")
+    private String producerUrl;
     @JsonProperty("category_url")
     private String categoryUrl;
 }
