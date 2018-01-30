@@ -1,5 +1,8 @@
 package pl.janiec.krystian.gamestorerest.util;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class TestConstants {
 
     public static final long ACTION_ID = 1L;
@@ -27,4 +30,9 @@ public class TestConstants {
     public static final String MAFIA_DESCRIPTION = "Mafia II is an open world action-adventure video game developed by 2K Czech and published by 2K Games";
     public static final Double MAFIA_PRICE = 128.90;
     public static final Long MAFIA_ID = 12L;
+    public static final Long ORDER_ID = 1L;
+    public static final String ORDER_DATE = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    public static final Integer ORDER_QUANTITY = 4;
+    public static final Double ORDER_PRICE = 359.96;
+
 }

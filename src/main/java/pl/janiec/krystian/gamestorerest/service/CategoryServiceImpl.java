@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.janiec.krystian.gamestorerest.api.mapper.CategoryMapper;
 import pl.janiec.krystian.gamestorerest.api.model.CategoryDTO;
+import pl.janiec.krystian.gamestorerest.domain.Category;
 import pl.janiec.krystian.gamestorerest.repository.CategoryRepository;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .stream()
                 .map(category -> {
                     CategoryDTO categoryDTO = categoryMapper.categoryToCategoryDTO(category);
-                    categoryDTO.setCategoryUrl(CATEGORIES_URL + category.getId());
+                    categoryDTO.setCategoryUrl(CATEGORIES_URL + category.getName().toLowerCase());
 
                     return categoryDTO;
                 })

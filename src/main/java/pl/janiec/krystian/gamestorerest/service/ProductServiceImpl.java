@@ -32,11 +32,7 @@ public class ProductServiceImpl implements ProductService {
                 .stream()
                 .map(product -> {
                     ProductDTO productDTO = productMapper.productToProductDTO(product);
-
-                    productDTO.setProductUrl(PRODUCTS_URL + product.getId());
-                    productDTO.setCategoryUrl(CATEGORIES_URL + product.getCategoryName());
-                    productDTO.setProducerUrl(PRODUCERS_URL + product.getProducerId());
-
+                    setProductDtoUrls(productDTO,product);
                     return productDTO;
                 })
                 .collect(Collectors.toList());
@@ -46,11 +42,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO getProductById(Long id) {
         Product product = productRepository.findById(id);
         ProductDTO productDTO = productMapper.productToProductDTO(product);
-
-        productDTO.setProductUrl(PRODUCTS_URL + product.getId());
-        productDTO.setCategoryUrl(CATEGORIES_URL + product.getCategoryName());
-        productDTO.setProducerUrl(PRODUCERS_URL + product.getProducerId());
-
+        setProductDtoUrls(productDTO,product);
         return productDTO;
     }
 
@@ -63,7 +55,6 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO updateProduct(ProductDTO productDTO, Long id) {
         Product product = productMapper.productDTOtoProduct(productDTO);
         product.setId(id);
-
         return saveProductAndReturnProductDTO(product);
     }
 
@@ -79,11 +70,7 @@ public class ProductServiceImpl implements ProductService {
                 .filter(producer -> producer.getProducerId().equals(id))
                 .map(product -> {
                     ProductDTO productDTO = productMapper.productToProductDTO(product);
-
-                    productDTO.setProductUrl(PRODUCTS_URL + product.getId());
-                    productDTO.setProducerUrl(PRODUCERS_URL + id);
-                    productDTO.setCategoryUrl(CATEGORIES_URL + product.getCategoryName());
-
+                    setProductDtoUrls(productDTO,product);
                     return productDTO;
                 })
                 .collect(Collectors.toList());
@@ -99,13 +86,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductDTO saveProductAndReturnProductDTO(Product product) {
-        Product savedProductInDB = productRepository.save(product);
-        ProductDTO newProductDTO = productMapper.productToProductDTO(savedProductInDB);
+        Product productInDB = productRepository.save(product);
+        ProductDTO productDTO = productMapper.productToProductDTO(productInDB);
+        setProductDtoUrls(productDTO,productInDB);
+        return productDTO;
+    }
 
-        newProductDTO.setProductUrl(PRODUCTS_URL + savedProductInDB.getId());
-        newProductDTO.setCategoryUrl(CATEGORIES_URL + savedProductInDB.getCategoryName());
-        newProductDTO.setProducerUrl(PRODUCERS_URL + savedProductInDB.getProducerId());
-
-        return newProductDTO;
+    private void setProductDtoUrls(ProductDTO productDTO, Product product){
+        productDTO.setProductUrl(PRODUCTS_URL + product.getId());
+        productDTO.setCategoryUrl(CATEGORIES_URL + product.getCategoryName());
+        productDTO.setProducerUrl(PRODUCERS_URL + product.getProducerId());
     }
 }

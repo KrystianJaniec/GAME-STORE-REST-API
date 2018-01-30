@@ -30,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .stream()
                 .map(customer -> {
                     CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl(CUSTOMERS_URL + customer.getId());
+                    setCustomerDtoUrls(customerDTO,customer);
 
                     return customerDTO;
                 })
@@ -59,16 +59,20 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private CustomerDTO saveCustomerAndReturnCustomerDTO(Customer customer) {
-        Customer savedCustomerInDB = customerRepository.save(customer);
-        CustomerDTO newCustomerDTO = customerMapper.customerToCustomerDTO(savedCustomerInDB);
+        Customer customerInDB = customerRepository.save(customer);
+        CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customerInDB);
 
-        newCustomerDTO.setCustomerUrl(CUSTOMERS_URL + savedCustomerInDB.getId());
+        setCustomerDtoUrls(customerDTO,customerInDB);
 
-        return newCustomerDTO;
+        return customerDTO;
     }
 
     @Override
     public void deleteCustomerById(Long id) {
         customerRepository.delete(id);
+    }
+
+    private void setCustomerDtoUrls(CustomerDTO customerDTO, Customer customer){
+        customerDTO.setCustomerUrl(CUSTOMERS_URL + customer.getId());
     }
 }

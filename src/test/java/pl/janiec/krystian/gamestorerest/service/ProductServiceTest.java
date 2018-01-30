@@ -86,10 +86,10 @@ public class ProductServiceTest {
     @Test
     public void shouldSuccessfullyUpdateProduct() throws Exception {
         ProductDTO productDTO = createNewProductDTO(WITCHER_3, WITCHER_DESCRIPTION, WITCHER_PRICE);
-        Product savedProductInDB = createNewProduct(productDTO.getName(), productDTO.getDescription(), productDTO.getPrice(),
+        Product product = createNewProduct(productDTO.getName(), productDTO.getDescription(), productDTO.getPrice(),
                 PRODUCER_ID, CATEGORY_ACTION, WITCHER_ID);
 
-        when(productRepository.save(any(Product.class))).thenReturn(savedProductInDB);
+        when(productRepository.save(any(Product.class))).thenReturn(product);
 
         ProductDTO updatedProductDTO = productService.updateProduct(productDTO, WITCHER_ID);
 
@@ -129,12 +129,12 @@ public class ProductServiceTest {
     @Test
     public void shouldShowCreatedProductForProducerWithId() throws Exception {
         ProductDTO productDTO = createNewProductDTO(WITCHER_3, WITCHER_DESCRIPTION, WITCHER_PRICE);
-        Product savedProductInDB = createNewProduct(productDTO.getName(), productDTO.getDescription(), productDTO.getPrice(),
+        Product product = createNewProduct(productDTO.getName(), productDTO.getDescription(), productDTO.getPrice(),
                 PRODUCER_ID, CATEGORY_ACTION, WITCHER_ID);
-        List<Product> products = Collections.singletonList(savedProductInDB);
+        List<Product> products = Collections.singletonList(product);
 
         when(productRepository.findAll()).thenReturn((products));
-        when(productRepository.save(any(Product.class))).thenReturn(savedProductInDB);
+        when(productRepository.save(any(Product.class))).thenReturn(product);
 
         ProductDTO newProductDTO = productService.createProductForProducerWithId(PRODUCER_ID, productDTO);
 

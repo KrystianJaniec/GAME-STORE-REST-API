@@ -89,7 +89,6 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.price", equalTo(MAFIA_PRICE)));
     }
 
-
     @Test
     public void shouldUpdateProductWithGivenIdAndShowUpdatedDTO() throws Exception {
         ProductDTO productContent = createNewProductDTO(WITCHER_3, WITCHER_DESCRIPTION, WITCHER_PRICE);

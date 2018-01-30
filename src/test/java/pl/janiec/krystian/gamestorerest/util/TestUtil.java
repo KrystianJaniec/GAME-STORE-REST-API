@@ -2,14 +2,10 @@ package pl.janiec.krystian.gamestorerest.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import pl.janiec.krystian.gamestorerest.api.model.CategoryDTO;
-import pl.janiec.krystian.gamestorerest.api.model.CustomerDTO;
-import pl.janiec.krystian.gamestorerest.api.model.ProducerDTO;
-import pl.janiec.krystian.gamestorerest.api.model.ProductDTO;
-import pl.janiec.krystian.gamestorerest.domain.Category;
-import pl.janiec.krystian.gamestorerest.domain.Customer;
-import pl.janiec.krystian.gamestorerest.domain.Producer;
-import pl.janiec.krystian.gamestorerest.domain.Product;
+import pl.janiec.krystian.gamestorerest.api.model.*;
+import pl.janiec.krystian.gamestorerest.domain.*;
+
+import java.time.LocalDate;
 
 public class TestUtil {
 
@@ -83,6 +79,27 @@ public class TestUtil {
         product.setDescription(description);
         product.setPrice(price);
         return product;
+    }
+
+    public static Order createNewOrder(Long id, String  date, Integer quantity, Double price, OrderState state, Long customerId, Long productId) {
+        Order order = new Order();
+        order.setId(id);
+        order.setOrderDate(date);
+        order.setQuantity(quantity);
+        order.setTotalPrice(price);
+        order.setOrderState(state);
+        order.setCustomerId(customerId);
+        order.setProductId(productId);
+        return order;
+    }
+
+    public static OrderDTO createNewOrderDTO(String date, Integer quantity, Double price, OrderState state) {
+        OrderDTO order = new OrderDTO();
+        order.setDate(date);
+        order.setQuantity(quantity);
+        order.setTotalPrice(price);
+        order.setState(state);
+        return order;
     }
 
     public static String writeValueAsJSON(Object object) throws JsonProcessingException {

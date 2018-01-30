@@ -39,7 +39,7 @@ public class ProducerController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProducerDTO createNewProducer(@RequestBody ProducerDTO producerDTO) {
+    public ProducerDTO createProducer(@RequestBody ProducerDTO producerDTO) {
         return producerService.createProducer(producerDTO);
     }
 

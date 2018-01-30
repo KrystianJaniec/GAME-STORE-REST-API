@@ -30,7 +30,7 @@ public class ProducerServiceImpl implements ProducerService {
                 .stream()
                 .map(producer -> {
                     ProducerDTO producerDTO = producerMapper.producerToProducerDTO(producer);
-                    producerDTO.setProducerUrl(PRODUCERS_URL + producer.getId());
+                    setProducerDtoUrl(producerDTO,producer);
 
                     return producerDTO;
                 })
@@ -58,17 +58,21 @@ public class ProducerServiceImpl implements ProducerService {
         return saveProducerAndReturnProducerDTO(producer);
     }
 
-    private ProducerDTO saveProducerAndReturnProducerDTO(Producer producer) {
-        Producer savedProducerInDB = producerRepository.save(producer);
-        ProducerDTO newProducerDTO = producerMapper.producerToProducerDTO(savedProducerInDB);
-
-        newProducerDTO.setProducerUrl(PRODUCERS_URL + savedProducerInDB.getId());
-
-        return newProducerDTO;
-    }
-
     @Override
     public void deleteProducerById(Long id) {
         producerRepository.delete(id);
+    }
+
+    private ProducerDTO saveProducerAndReturnProducerDTO(Producer producer) {
+        Producer producerInDB = producerRepository.save(producer);
+        ProducerDTO producerDTO = producerMapper.producerToProducerDTO(producerInDB);
+
+        setProducerDtoUrl(producerDTO,producerInDB);
+
+        return producerDTO;
+    }
+
+    private void setProducerDtoUrl(ProducerDTO producerDTO, Producer producer){
+        producerDTO.setProducerUrl(PRODUCERS_URL + producer.getId());
     }
 }
